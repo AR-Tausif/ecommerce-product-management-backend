@@ -28,7 +28,22 @@ const getProductsFromDB: RequestHandler = async (req, res, next) => {
   }
 };
 
+const getSingleProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const data = await ProductServices.getSingleProduct(productId);
+    res.status(201).json({
+      success: true,
+      message: "Product fetched successfully!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const ProductControllers = {
   createProductIntoDB,
   getProductsFromDB,
+  getSingleProduct,
 };
