@@ -14,15 +14,18 @@ const getProductsFromDB = async ({ searchTerm }: { searchTerm: string }) => {
         { name: new RegExp(searchTerm, 'i') },
         { description: new RegExp(searchTerm, 'i') },
       ],
-    }).select('-_id') // Exclude the _id field
+    })
+    // .select('-_id') // Exclude the _id field
   } else {
-    products = await Product.find({}).select('-_id') // Exclude the _id field
+    products = await Product.find({})
+    // .select('-_id') // Exclude the _id field
   }
 
   return products
 }
 const getSingleProduct = async (productId: string) => {
-  const product = await Product.findById(productId).select('-_id')
+  const product = await Product.findById(productId)
+  // .select('-_id')
   return product
 }
 const updateSingleProduct = async (productId: string, payload: TProduct) => {
