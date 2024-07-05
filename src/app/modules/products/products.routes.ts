@@ -13,5 +13,6 @@ router.post(
 router.get("/", ProductControllers.getProductsFromDB);
 router.get("/:productId", ProductControllers.getSingleProduct);
 router.put("/:productId", ProductControllers.updateSingleProduct);
+router.delete("/:productId", ProductControllers.deleteSingleProduct);
 
 export const ProductRouter = router;

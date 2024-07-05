@@ -22,10 +22,15 @@ const updateSingleProduct = async (productId: string, payload: TProduct) => {
   );
   return product;
 };
+const deleteSingleProduct = async (productId: string) => {
+  const product = await Product.findOneAndDelete({ _id: productId });
+  return product;
+};
 
 export const ProductServices = {
   createProductIntoDB,
   getProductsFromDB,
   getSingleProduct,
   updateSingleProduct,
+  deleteSingleProduct,
 };
