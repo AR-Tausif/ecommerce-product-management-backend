@@ -33,7 +33,12 @@ const createNewOrder = async (orderBody: TOrder) => {
   return new_order;
 };
 
-const getAllOrders = async () => {
+const getAllOrders = async (query: { email: string }) => {
+  console.log(query, "ss");
+  if (query.email) {
+    const orders = await Order.find({ email: query.email });
+    return orders;
+  }
   const orders = await Order.find({});
   return orders;
 };

@@ -17,7 +17,9 @@ const createNewOrder: RequestHandler = async (req, res, next) => {
 };
 const getAllOrders: RequestHandler = async (req, res, next) => {
   try {
-    const data = await OrderServices.getAllOrders();
+    const data = await OrderServices.getAllOrders({
+      email: req.query.email as string,
+    });
     res.status(201).json({
       success: true,
       message: "Orders fetched successfully!",
