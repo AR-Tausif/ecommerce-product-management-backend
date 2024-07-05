@@ -42,8 +42,27 @@ const getSingleProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
+const updateSingleProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const new_product_data = req.body;
+    const data = await ProductServices.updateSingleProduct(
+      productId,
+      new_product_data
+    );
+    res.status(201).json({
+      success: true,
+      message: "Product fetched successfully!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const ProductControllers = {
   createProductIntoDB,
   getProductsFromDB,
   getSingleProduct,
+  updateSingleProduct,
 };

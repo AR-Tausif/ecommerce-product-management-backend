@@ -12,5 +12,6 @@ router.post(
 
 router.get("/", ProductControllers.getProductsFromDB);
 router.get("/:productId", ProductControllers.getSingleProduct);
+router.put("/:productId", ProductControllers.updateSingleProduct);
 
 export const ProductRouter = router;

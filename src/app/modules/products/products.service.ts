@@ -13,9 +13,19 @@ const getSingleProduct = async (productId: string) => {
   const product = await Product.findById(productId);
   return product;
 };
+const updateSingleProduct = async (productId: string, payload: TProduct) => {
+  console.log(payload);
+  const product = await Product.findOneAndUpdate(
+    { _id: productId },
+    { $set: payload },
+    { new: true }
+  );
+  return product;
+};
 
 export const ProductServices = {
   createProductIntoDB,
   getProductsFromDB,
   getSingleProduct,
+  updateSingleProduct,
 };

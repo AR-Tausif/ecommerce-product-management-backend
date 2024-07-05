@@ -30,6 +30,11 @@ const createProductSchema = z.object({
   }),
 });
 
+const updateSingleProductSchema = createProductSchema.partial({
+  body: true,
+});
+
 export const ProductValidations = {
   createProductSchema,
+  updateSingleProductSchema,
 };
