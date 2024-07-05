@@ -1,6 +1,7 @@
 import express, { ErrorRequestHandler } from "express";
 import cors from "cors";
 import appRoutes from "./app/routes";
+import globalErorrHandler from "./app/middlewares/globalErrorHandler";
 const app = express();
 
 app.use(cors());
@@ -11,10 +12,5 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use((err, req, res, next) => {
-  res.status(404).json({
-    success: false,
-    message: err.message,
-  });
-});
+app.use(globalErorrHandler);
 export default app;

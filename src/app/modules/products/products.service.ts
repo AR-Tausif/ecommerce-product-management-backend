@@ -5,7 +5,16 @@ const createProductIntoDB = async (payload: TProduct) => {
   const newProduct = await Product.create(payload);
   return newProduct;
 };
-const getProductsFromDB = async () => {
+const getProductsFromDB = async ({ searchTerm }: { searchTerm: string }) => {
+  if (searchTerm) {
+    const products = await Product.find({
+      $or: [
+        { name: new RegExp(searchTerm, "i") },
+        { description: new RegExp(searchTerm, "i") },
+      ],
+    });
+    return products;
+  }
   const products = await Product.find({});
   return products;
 };
@@ -24,7 +33,7 @@ const updateSingleProduct = async (productId: string, payload: TProduct) => {
 };
 const deleteSingleProduct = async (productId: string) => {
   const product = await Product.findOneAndDelete({ _id: productId });
-  return product;
+  return null;
 };
 
 export const ProductServices = {
