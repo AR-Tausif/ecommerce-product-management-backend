@@ -9,5 +9,6 @@ router.post(
   ValidationSchema(OrderValidations.createOrderSchema),
   OrderControllers.createNewOrder
 );
+router.get("/", OrderControllers.getAllOrders);
 
 export const OrdersRouter = router;

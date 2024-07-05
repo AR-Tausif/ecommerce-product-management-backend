@@ -32,6 +32,12 @@ const createNewOrder = async (orderBody: TOrder) => {
   const new_order = await Order.create(orderBody);
   return new_order;
 };
+
+const getAllOrders = async () => {
+  const orders = await Order.find({});
+  return orders;
+};
 export const OrderServices = {
   createNewOrder,
+  getAllOrders,
 };
