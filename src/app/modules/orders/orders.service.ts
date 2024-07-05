@@ -1,48 +1,53 @@
-import AppError from "../../errors/AppError";
-import Product from "../products/products.model";
-import { TOrder } from "./orders.interface";
-import httpStatus from "http-status";
-import Order from "./orders.model";
+import AppError from '../../errors/AppError'
+import Product from '../products/products.model'
+import { TOrder } from './orders.interface'
+import httpStatus from 'http-status'
+import Order from './orders.model'
 
 const createNewOrder = async (orderBody: TOrder) => {
-  const existProduct = await Product.findById(orderBody.productId);
-  console.log({ existProduct, orderBody });
+  // finding product by product _id
+  const existProduct = await Product.findById(orderBody.productId)
+
   if (!existProduct) {
-    throw new AppError(httpStatus.FORBIDDEN, `Product not found`);
+    throw new AppError(httpStatus.FORBIDDEN, `Product not found`)
   }
 
   if (!existProduct.inventory.inStock) {
-    throw new AppError(httpStatus.FORBIDDEN, `Product already stock out`);
+    throw new AppError(httpStatus.FORBIDDEN, `Product already stock out`)
   }
-
+  // when reach quantity zero then will show this error message
   if (existProduct.inventory.quantity < orderBody.quantity) {
-    throw new AppError(httpStatus.FORBIDDEN, `Insufficiant products`);
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      `Insufficient quantity available in inventory`,
+    )
   }
-  const priceValid = existProduct.price * orderBody.quantity;
-  console.log(priceValid);
+  // price validating from collect database and then multiply with provided quantity body number
+  const priceValid = existProduct.price * orderBody.quantity
+
   if (orderBody.price !== priceValid) {
-    throw new AppError(httpStatus.FORBIDDEN, `Price would be ${priceValid}`);
+    throw new AppError(httpStatus.FORBIDDEN, `Price would be ${priceValid}`)
   }
-  existProduct.inventory.quantity -= orderBody.quantity;
-  console.log(existProduct.inventory);
+  existProduct.inventory.quantity -= orderBody.quantity
+
   if (existProduct.inventory.quantity == 0) {
-    existProduct.inventory.inStock = false;
+    existProduct.inventory.inStock = false
   }
-  existProduct.save();
-  const new_order = await Order.create(orderBody);
-  return new_order;
-};
+  existProduct.save()
+  const new_order = await Order.create(orderBody)
+  return new_order
+}
 
 const getAllOrders = async (query: { email: string }) => {
-  console.log(query, "ss");
+  let orders
   if (query.email) {
-    const orders = await Order.find({ email: query.email });
-    return orders;
+    orders = await Order.find({ email: query.email }).select('-_id')
+  } else {
+    orders = await Order.find({}).select('-_id')
   }
-  const orders = await Order.find({});
-  return orders;
-};
+  return orders
+}
 export const OrderServices = {
   createNewOrder,
   getAllOrders,
-};
+}
